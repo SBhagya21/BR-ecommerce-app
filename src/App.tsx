@@ -38,7 +38,7 @@ type CartItem = Product & {
 };
 
 function App() {
-  // ✅ LOCAL STORAGE LOAD
+  // ================= CART =================
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const savedCart = localStorage.getItem("cart");
@@ -51,7 +51,6 @@ function App() {
   const [message, setMessage] = useState("");
   const [showLogo, setShowLogo] = useState(false);
 
-  // ✅ SAVE TO LOCAL STORAGE
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -59,74 +58,49 @@ function App() {
   // ================= ADD TO CART =================
   const addToCart = (product: Product) => {
     const exist = cart.find(
-      (item) =>
-        item.id === product.id &&
-        item.size === product.size
+      (item) => item.id === product.id && item.size === product.size
     );
 
     if (exist) {
       setCart(
         cart.map((item) =>
-          item.id === product.id &&
-          item.size === product.size
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
+          item.id === product.id && item.size === product.size
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         )
       );
     } else {
-      setCart([
-        ...cart,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ]);
+      setCart([...cart, { ...product, quantity: 1 }]);
     }
 
     setMessage("✔ Successfully Added to Cart");
 
-    setTimeout(() => {
-      setMessage("");
-    }, 2000);
+    setTimeout(() => setMessage(""), 2000);
   };
 
-  // ================= INCREASE =================
   const increaseQty = (id: number) => {
     setCart(
       cart.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
-          : item
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
 
-  // ================= DECREASE =================
   const decreaseQty = (id: number) => {
     setCart(
       cart
         .map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                quantity: item.quantity - 1,
-              }
-            : item
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0)
     );
   };
 
   return (
-    <BrowserRouter>
-      <div>
-        {/* ================= BIG LOGO OVERLAY ================= */}
+<BrowserRouter basename="/BR-Clothing-Store">      {/* ✅ MAIN LAYOUT WRAPPER (FIX FOR FOOTER ISSUE) */}
+      <div className="app-container">
+
+        {/* ================= BIG LOGO ================= */}
         {showLogo && (
           <div
             onClick={() => setShowLogo(false)}
@@ -186,7 +160,6 @@ function App() {
             alignItems: "center",
           }}
         >
-          {/* LOGO */}
           <Link to="/">
             <img
               src={logo1}
@@ -205,109 +178,60 @@ function App() {
             />
           </Link>
 
-          {/* NAV LINKS */}
           <div style={{ display: "flex", gap: "20px" }}>
-            <NavLink
-              to="/"
-              style={({ isActive }) => ({
-                color: isActive ? "darkred" : "lightblue",
-                textDecoration: "none",
-                fontWeight: isActive ? "bold" : "normal",
-              })}
-            >
+            <NavLink to="/" style={({ isActive }) => ({
+              color: isActive ? "darkred" : "lightblue",
+              textDecoration: "none",
+              fontWeight: isActive ? "bold" : "normal",
+            })}>
               Home
             </NavLink>
 
-            <NavLink
-              to="/brands"
-              style={({ isActive }) => ({
-                color: isActive ? "darkred" : "lightblue",
-                textDecoration: "none",
-                fontWeight: isActive ? "bold" : "normal",
-              })}
-            >
+            <NavLink to="/brands" style={({ isActive }) => ({
+              color: isActive ? "darkred" : "lightblue",
+              textDecoration: "none",
+              fontWeight: isActive ? "bold" : "normal",
+            })}>
               Brands
             </NavLink>
 
-            <NavLink
-              to="/contact"
-              style={({ isActive }) => ({
-                color: isActive ? "darkred" : "lightblue",
-                textDecoration: "none",
-                fontWeight: isActive ? "bold" : "normal",
-              })}
-            >
+            <NavLink to="/contact" style={({ isActive }) => ({
+              color: isActive ? "darkred" : "lightblue",
+              textDecoration: "none",
+              fontWeight: isActive ? "bold" : "normal",
+            })}>
               Contact
             </NavLink>
 
-            <NavLink
-              to="/cart"
-              style={({ isActive }) => ({
-                color: isActive ? "red" : "lightblue",
-                textDecoration: "none",
-                fontWeight: isActive ? "bold" : "normal",
-              })}
-            >
+            <NavLink to="/cart" style={({ isActive }) => ({
+              color: isActive ? "red" : "lightblue",
+              textDecoration: "none",
+              fontWeight: "bold",
+            })}>
               🛒 ({cart.reduce((s, i) => s + i.quantity, 0)})
             </NavLink>
           </div>
         </nav>
 
-        {/* ================= ROUTES ================= */}
-        <Routes>
-          <Route
-            path="/"
-            element={<Home addToCart={addToCart} />}
-          />
+        {/* ================= PAGE CONTENT (IMPORTANT FIX) ================= */}
+        <div className="page-content">
+          <Routes>
+            {/* 🔥 HOME FIRST ALWAYS */}
+            <Route path="/" element={<Home addToCart={addToCart} />} />
 
-          <Route
-            path="/cart"
-            element={
-              <Cart
-                cart={cart}
-                increaseQty={increaseQty}
-                decreaseQty={decreaseQty}
-              />
-            }
-          />
-
-          <Route
-            path="/brands"
-            element={<Brands />}
-          />
-
-          <Route
-            path="/brand/:name"
-            element={
-              <BrandProducts addToCart={addToCart} />
-            }
-          />
-
-          <Route
-            path="/checkout"
-            element={<Checkout cart={cart} />}
-          />
-
-          <Route
-            path="/contact"
-            element={<Contact />}
-          />
-
-          <Route
-            path="/category/:type"
-            element={<Category addToCart={addToCart} />}
-          />
-
-          <Route
-            path="/product/:id"
-            element={
-              <ProductDetails addToCart={addToCart} />
-            }
-          />
-        </Routes>
+            <Route path="/brands" element={<Brands />} />
+            <Route path="/brand/:name" element={<BrandProducts addToCart={addToCart} />} />
+            <Route path="/cart" element={<Cart cart={cart} increaseQty={increaseQty} decreaseQty={decreaseQty} />} />
+            <Route path="/checkout" element={<Checkout cart={cart} />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/category/:type" element={<Category addToCart={addToCart} />} />
+            <Route path="/product/:id" element={<ProductDetails addToCart={addToCart} />} />
+          </Routes>
+        </div>
 
         {/* ================= FOOTER ================= */}
         <Footer />
+
       </div>
     </BrowserRouter>
   );
