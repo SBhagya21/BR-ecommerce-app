@@ -3,10 +3,8 @@ import "../index.css";
 import { useState } from "react";
 
 export default function Contact() {
-
   const [success, setSuccess] = useState(false);
 
-  // FORM STATE (IMPORTANT FIX)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,7 +12,6 @@ export default function Contact() {
     message: ""
   });
 
-  // HANDLE INPUT CHANGE
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -24,14 +21,24 @@ export default function Contact() {
     });
   };
 
-  // SUBMIT FORM
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // SHOW SUCCESS MESSAGE
+    // ✅ validation check
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.subject.trim() ||
+      !formData.message.trim()
+    ) {
+      alert("Please fill all fields before sending!");
+      return;
+    }
+
+    // show success message
     setSuccess(true);
 
-    // RESET FORM (THIS FIXES YOUR ISSUE)
+    // reset form
     setFormData({
       name: "",
       email: "",
@@ -39,7 +46,7 @@ export default function Contact() {
       message: ""
     });
 
-    // HIDE MESSAGE AFTER 3 SEC
+    // hide message after 3 seconds
     setTimeout(() => {
       setSuccess(false);
     }, 3000);
@@ -47,7 +54,6 @@ export default function Contact() {
 
   return (
     <div className="contact-page">
-
       {/* SUCCESS MESSAGE */}
       {success && (
         <div
@@ -56,7 +62,7 @@ export default function Contact() {
             top: "20px",
             right: "20px",
             background: "lightblue",
-            color: "dakblue",
+            color: "darkblue",
             padding: "15px 25px",
             borderRadius: "10px",
             fontWeight: "bold",
@@ -73,10 +79,9 @@ export default function Contact() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "40px",
+          padding: "40px"
         }}
       >
-
         <div
           style={{
             width: "100%",
@@ -86,10 +91,9 @@ export default function Contact() {
             overflow: "hidden",
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            boxShadow: "0 30px 40px rgba(182, 179, 242, 0.3)",
+            boxShadow: "0 30px 40px rgba(182, 179, 242, 0.3)"
           }}
         >
-
           {/* LEFT SIDE */}
           <div
             style={{
@@ -104,23 +108,27 @@ export default function Contact() {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              gap: "25px",
+              gap: "25px"
             }}
           >
             <h1 style={{ fontSize: "48px", margin: 0 }}>Contact Us</h1>
 
             <p style={{ fontSize: "18px", color: "#e2e8f0" }}>
-            We would love to hear from you. 
-            Whether you have a question about products, pricing, orders, or anything else, our team is ready to answer all your questions.
+              We would love to hear from you. Whether you have a question about
+              products, pricing, orders, or anything else, our team is ready to
+              answer all your questions.
             </p>
 
             <div>
               <h3>📍 Address</h3>
               <p>Colombo, Sri Lanka</p>
-<br/>
+
+              <br />
+
               <h3>📞 Phone</h3>
               <p>+94 71 234 5016</p>
-<br/>
+
+              <br />
 
               <h3>✉ Email</h3>
               <p>rbclothing@gmail.com</p>
@@ -129,7 +137,6 @@ export default function Contact() {
 
           {/* RIGHT SIDE */}
           <div style={{ padding: "60px 50px" }}>
-
             <h2 style={{ fontSize: "38px", marginBottom: "30px" }}>
               Send Message
             </h2>
@@ -139,10 +146,9 @@ export default function Contact() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "20px",
+                gap: "20px"
               }}
             >
-
               <input
                 name="name"
                 value={formData.name}
@@ -186,14 +192,12 @@ export default function Contact() {
                   color: "white",
                   fontSize: "18px",
                   fontWeight: "bold",
-                  cursor: "pointer",
+                  cursor: "pointer"
                 }}
               >
                 Send Message
               </button>
-
             </form>
-
           </div>
         </div>
       </div>
@@ -206,5 +210,5 @@ const inputStyle = {
   borderRadius: "12px",
   border: "1px solid #cbd5e1",
   fontSize: "16px",
-  outline: "none",
+  outline: "none"
 };
