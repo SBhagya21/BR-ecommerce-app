@@ -216,6 +216,6 @@ export const products = [
     brand: "levis",
     rating: 4,
     category: "others",
-    type: "shoes",
+    
   }
 ];
