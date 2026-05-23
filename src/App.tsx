@@ -96,11 +96,8 @@ function App() {
     );
   };
 
-  return (
-<BrowserRouter basename="/BR-Clothing-Store">      {/* ✅ MAIN LAYOUT WRAPPER (FIX FOR FOOTER ISSUE) */}
-      <div className="app-container">
-
-        {/* ================= BIG LOGO ================= */}
+return (
+  <div className="app-container">
         {showLogo && (
           <div
             onClick={() => setShowLogo(false)}
@@ -233,7 +230,7 @@ function App() {
         <Footer />
 
       </div>
-    </BrowserRouter>
+    
   );
 }
 

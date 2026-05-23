@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/ecommerce-app/', // 👈 VERY IMPORTANT
+  base: '/BR-Clothing-Store/', // 👈 VERY IMPORTANT
 })
