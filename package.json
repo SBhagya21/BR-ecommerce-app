@@ -3,23 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://SBhagya21.github.io/BR-Clothing-Store",
+  "homepage": "https://sbhagya21.github.io/BR-ecommerce-app/",
 
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  },
+    "dev": "vite",
+    "build": "vite build",  
+   "deploy": "gh-pages -d dist"
 
+  },
   "dependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.2"
   },
-
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@types/node": "^24.12.2",
