@@ -37,6 +37,7 @@ type CartItem = Product & {
 };
 
 function App() {
+  
   // ================= CART =================
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
