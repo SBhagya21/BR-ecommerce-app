@@ -37,7 +37,7 @@ type CartItem = Product & {
 };
 
 function App() {
-  
+  const [menuOpen, setMenuOpen] = useState(false);
   // ================= CART =================
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
@@ -147,68 +147,84 @@ return (
         )}
 
         {/* ================= NAVBAR ================= */}
-        <nav
-          style={{
-            padding: "20px",
-            background: "#0e0238",
-            color: "lightblue",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Link to="/">
-            <img
-              src={logo1}
-              alt="logo"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowLogo(true);
-              }}
-              style={{
-                width: "55px",
-                height: "45px",
-                borderRadius: "100%",
-                objectFit: "cover",
-                cursor: "pointer",
-              }}
-            />
-          </Link>
+    <nav style={{
+  padding: "15px 20px",
+  background: "#0e0238",
+  color: "lightblue",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  flexWrap: "wrap",
+  position: "sticky",
+  top: 0,
+  zIndex: 1000,
+}}>
+  {/* Logo */}
+  <Link to="/">
+    <img
+      src={logo1}
+      alt="logo"
+      onClick={(e) => { e.preventDefault(); setShowLogo(true); }}
+      style={{
+        width: "55px",
+        height: "45px",
+        borderRadius: "100%",
+        objectFit: "cover",
+        cursor: "pointer",
+      }}
+    />
+  </Link>
 
-          <div style={{ display: "flex", gap: "20px" }}>
-            <NavLink to="/" style={({ isActive }) => ({
-              color: isActive ? "darkred" : "lightblue",
-              textDecoration: "none",
-              fontWeight: isActive ? "bold" : "normal",
-            })}>
-              Home
-            </NavLink>
+  {/* Hamburger button - only shows on mobile */}
+  <button
+    onClick={() => setMenuOpen(!menuOpen)}
+    style={{
+      display: "none",
+      background: "none",
+      border: "none",
+      color: "lightblue",
+      fontSize: "28px",
+      cursor: "pointer",
+    }}
+    className="hamburger-btn"
+  >
+    {menuOpen ? "✕" : "☰"}
+  </button>
 
-            <NavLink to="/brands" style={({ isActive }) => ({
-              color: isActive ? "darkred" : "lightblue",
-              textDecoration: "none",
-              fontWeight: isActive ? "bold" : "normal",
-            })}>
-              Brands
-            </NavLink>
+ {/* Nav links */}
+<div
+  className={`nav-links${menuOpen ? " open" : ""}`}
+  style={{
+    display: "flex",
+    gap: "20px",
+    alignItems: "center",
+  }}
+>
+  <NavLink to="/" onClick={() => setMenuOpen(false)} style={({ isActive }) => ({
+    color: isActive ? "darkred" : "lightblue",
+    textDecoration: "none",
+    fontWeight: isActive ? "bold" : "normal",
+  })}>Home</NavLink>
 
-            <NavLink to="/contact" style={({ isActive }) => ({
-              color: isActive ? "darkred" : "lightblue",
-              textDecoration: "none",
-              fontWeight: isActive ? "bold" : "normal",
-            })}>
-              Contact
-            </NavLink>
+  <NavLink to="/brands" onClick={() => setMenuOpen(false)} style={({ isActive }) => ({
+    color: isActive ? "darkred" : "lightblue",
+    textDecoration: "none",
+    fontWeight: isActive ? "bold" : "normal",
+  })}>Brands</NavLink>
 
-            <NavLink to="/cart" style={({ isActive }) => ({
-              color: isActive ? "red" : "lightblue",
-              textDecoration: "none",
-              fontWeight: "bold",
-            })}>
-              🛒 ({cart.reduce((s, i) => s + i.quantity, 0)})
-            </NavLink>
-          </div>
-        </nav>
+  <NavLink to="/contact" onClick={() => setMenuOpen(false)} style={({ isActive }) => ({
+    color: isActive ? "darkred" : "lightblue",
+    textDecoration: "none",
+    fontWeight: isActive ? "bold" : "normal",
+  })}>Contact</NavLink>
+
+  <NavLink to="/cart" onClick={() => setMenuOpen(false)} style={({ isActive }) => ({
+    color: isActive ? "red" : "lightblue",
+    textDecoration: "none",
+    fontWeight: "bold",
+  })}>🛒 ({cart.reduce((s, i) => s + i.quantity, 0)})</NavLink>
+</div>
+</nav>
 
         {/* ================= PAGE CONTENT (IMPORTANT FIX) ================= */}
         <div className="page-content">
